@@ -105,7 +105,7 @@ def upload_files():
     pred = np.argmax(model.predict(x_user), axis = -1)
     genre = le.inverse_transform([mode(pred)])[0]
     
-    
+    os.unlink(filepath)
     return render_template('index.html', label = genre)
 
 if __name__ == '__main__':
