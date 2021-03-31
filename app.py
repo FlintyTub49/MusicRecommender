@@ -1,38 +1,112 @@
 from flask import Flask, render_template, request
-# from flask_ngrok import run_with_ngrok
+import numpy as np
+import librosa
+import pandas as pd
 import os
+import pickle as pk
+from keras.models import load_model
+import math
+
+from statistics import mode
 
 app = Flask(__name__)
-# run_with_ngrok(app)
-
 app.config['UPLOADS'] = 'uploads'
 
-# def bestModel():
-#     global mymodel
-#     mymodel = load_model('catDog.h5')
 
+# ------------------------------------
+# Loading The Model and Label Encoder
+# ------------------------------------
+codePath = os.path.dirname(os.path.abspath('app.py'))
+le = os.path.join(codePath, 'Models/le.pk')
+cnn = os.path.join(codePath, 'Models/best_model.h5')
+
+le = pk.load(open(le, 'rb'))
+model = load_model(cnn)
+
+
+# -------------------------------------
+# Render Main Home Template Index.html
+# -------------------------------------
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# def predicting(file):
-#   # img = load_img(file, grayscale = True, target_size = (28, 28, 1), color_mode = 'grayscale')
-#   # img = img_to_array(img)
-#     img = cv2.imread(file)
-#   #   img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-#     img = cv2.resize(img, (32, 32))
-#     img = np.resize(img, (1, 32, 32, 3)) / 255
-#     pred = mymodel.predict(img)
-#     if pred > 0.5: return 'dog'
-#     else: return 'cat'
 
+# --------------------------------------
+# Parameters to Preprocess Data
+# --------------------------------------
+SAMPLE_RATE = 22050
+TRACK_DURATION = 30
+SAMPLES_PER_TRACK = SAMPLE_RATE * TRACK_DURATION
+num_segments = 10
+num_mfcc = 13
+n_fft = 2048
+hop_length = 512
+
+
+# --------------------------------------
+# Preprocesses User Input Taking a File
+# --------------------------------------
+def getUserInput(path, genre):
+  samples_per_segment = int(SAMPLES_PER_TRACK / num_segments)
+  num_mfcc_vectors_per_segment = math.ceil(samples_per_segment / hop_length)
+
+  user = {"labels": [], "mfcc": []}
+
+  signal, sample_rate = librosa.load(path, sr = SAMPLE_RATE)
+
+  # process all segments of audio file
+  for d in range(num_segments):
+
+      # calculate start and finish sample for current segment
+      start = samples_per_segment * d
+      finish = start + samples_per_segment
+
+      # # extract mfcc
+      if len(signal[start : finish]) == samples_per_segment:
+        mfcc = librosa.feature.mfcc(signal[start:finish], sample_rate, n_mfcc = num_mfcc, 
+                                    n_fft = n_fft, hop_length = hop_length)
+        mfcc = mfcc.T
+
+        # # store only mfcc feature with expected number of vectors
+        if len(mfcc) == num_mfcc_vectors_per_segment:
+            user["mfcc"].append(mfcc.tolist())
+            user["labels"].append(genre)
+
+  x_user = np.array(user['mfcc'])
+  y_user = np.array(user['labels'])
+  return x_user, y_user
+
+
+# --------------------------------------
+# Main Function To Process Data and Display Output
+# --------------------------------------
 @app.route('/', methods = ['POST'])
 def upload_files():
+
+    # --------------------------------------
+    # Get File From User
+    # --------------------------------------
     file = request.files['audiofile']
     filepath = os.path.join(app.config['UPLOADS'], file.filename)
     file.save(filepath)
-    # pred = predicting(filepath)
-    return render_template('index.html', label = 'why this kolaveri d')
+
+
+    # --------------------------------------
+    # Preprocess User Input To Put in Model 
+    # --------------------------------------
+    x_user, y_user = getUserInput(filepath, 'rock')
+    x_user = x_user[..., np.newaxis]
+    
+    
+    # ----------------------------
+    # Running The Model
+    # ----------------------------
+    pred = np.argmax(model.predict(x_user), axis = -1)
+    genre = le.inverse_transform([mode(pred)])[0]
+    
+    
+    return render_template('index.html', label = genre)
 
 if __name__ == '__main__':
     # bestModel()
