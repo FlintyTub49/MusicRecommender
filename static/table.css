@@ -1,0 +1,21 @@
+.table-data {
+  border: 2px solid white;
+  outline: none;
+  background: #151a18;
+  color: white;
+  font-size: 10;
+  margin: auto;
+  margin-bottom: 2em;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 10px;
+  border-left: 1px solid white;
+}
+
+th {
+  padding: 10px;
+  border-left: 1px solid white;
+  text-align: center;
+}

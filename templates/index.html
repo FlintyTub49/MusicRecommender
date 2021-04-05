@@ -9,6 +9,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='nicepage.css') }}" media="screen">
 <link rel="stylesheet" href="{{ url_for('static', filename='Home.css') }}" media="screen">
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='table.css') }}">
     <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
     <meta name="generator" content="Nicepage 3.10.2, nicepage.com">
@@ -72,7 +73,7 @@
           <input type="submit" value="Upload" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-2">
           <!--<input type=submit value=Upload>-->
         </form>
-        <h2>Your Predicted Song is: {{label}}</h2><br><br>
+        <h3>{{label}}</h3><br><br>
         {% for table in tables %}
         {{titles[loop.index]}}
         {{ table|safe }}

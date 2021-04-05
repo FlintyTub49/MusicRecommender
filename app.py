@@ -122,7 +122,8 @@ def upload_files():
     # ----------------------------
     # Printing The Genre With Recommendations
     # ----------------------------
-    dummy = df.to_html(classes = 'data')
+    genre = 'Your Predicted Genre is {}'.format(genre)
+    dummy = df.to_html(classes = 'table-data')
     return render_template('index.html', label = genre, 
                            tables=[dummy], titles=df.columns.values)
     # return render_template('index.html', label = genre)
