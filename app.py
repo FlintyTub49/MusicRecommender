@@ -12,16 +12,17 @@ app = Flask(__name__)
 app.config['UPLOADS'] = 'uploads'
 
 
-# ------------------------------------
-# Loading The Model and Label Encoder
-# ------------------------------------
+# --------------------------------------------------
+# Loading The Model, Label Encoder & Recommendations
+# --------------------------------------------------
 codePath = os.path.dirname(os.path.abspath('app.py'))
 le = os.path.join(codePath, 'Models/le.pk')
 cnn = os.path.join(codePath, 'Models/best_model.h5')
+recom = os.path.join(codePath, 'Models/Final Recs.csv')
 
 le = pk.load(open(le, 'rb'))
 model = load_model(cnn)
-
+recs = pd.read_csv(recom)
 
 # -------------------------------------
 # Render Main Home Template Index.html
@@ -105,7 +106,26 @@ def upload_files():
     genre = le.inverse_transform([mode(pred)])[0]
     
     os.unlink(filepath)
-    return render_template('index.html', label = genre)
+
+
+    # ----------------------------
+    # Getting The Recommendation
+    # ----------------------------
+    recommend = recs[recs['Genre'] == genre]
+
+    if recommend.shape[0] >= 3: sample = 3
+    else: sample = recommend.shape[0]
+    # print('\nSong Recommendations For You Are:')
+    df = recommend.sample(sample)
+
+
+    # ----------------------------
+    # Printing The Genre With Recommendations
+    # ----------------------------
+    dummy = df.to_html(classes = 'data')
+    return render_template('index.html', label = genre, 
+                           tables=[dummy], titles=df.columns.values)
+    # return render_template('index.html', label = genre)
 
 if __name__ == '__main__':
     # bestModel()

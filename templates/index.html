@@ -72,7 +72,11 @@
           <input type="submit" value="Upload" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-2">
           <!--<input type=submit value=Upload>-->
         </form>
-        {{label}}
+        <h2>Your Predicted Song is: {{label}}</h2><br><br>
+        {% for table in tables %}
+        {{titles[loop.index]}}
+        {{ table|safe }}
+        {% endfor %}
       </div>
     </section>
     
