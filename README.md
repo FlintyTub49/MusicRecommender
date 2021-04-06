@@ -17,6 +17,9 @@ Key features:
 - Accurate genre predictions
 - Recommendations to help build your playlist for an enthralling musical experience
 
+### Disclaimer:
+- The app supports the use of .WAV file format. Please use the link in the application to convert to .WAV format from .MP3 or .MPEG formats.
+
 ### Dependencies:
 We use the following python libraries:
 * [numpy]
