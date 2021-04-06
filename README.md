@@ -77,6 +77,12 @@ flask run
 
 ### Working Demo
 
+- The website will look as shown below. Press the red button to upload a song file of your choice in .wav formt. If you have the music file in any other format, there is a link provided below the button to convert the any type of audio file to a .wav file.
+![Input Image](https://github.com/FlintyTub49/MusicRecommender/blob/main/Output/input.png)
+
+- After processing (which might take upto 30 seconds depending on the file size) you will recieve the output as follows. The website will tell you a genre for your uploaded file and on the basis of that recommend you songs of the same genre. The list of all songs available for recommendations along with their genre is given in the Models folder as a .csv file.
+![Output Image](https://github.com/FlintyTub49/MusicRecommender/blob/main/Output/output.png)
+
 ### Development
 
 Developed By :-
