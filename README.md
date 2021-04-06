@@ -30,12 +30,18 @@ We use the following python libraries:
 
 ### Run the application:
 
--Download the application files from this repo as a zip file
--Unzip the contents
--Open the Command prompt/ Terminal/ Windows Powershell and cd to the folder’s directory
--Ensure python v.3 is running on your system.
--For windows:
-—Type the following in : Command prompt/ Windows Powershell
+- Download the application files from this repo as a zip file
+
+- Unzip the contents
+
+- Open the Command prompt/ Terminal/ Windows Powershell and cd to the folder’s directory
+
+- Ensure python v.3 is running on your system.
+
+- For windows:
+
+— - Type the following in : Command prompt/ Windows Powershell
+
 - --
 
 ```sh
@@ -53,10 +59,10 @@ flask run
 ```
 — -- 
 
-—Type the ‘localhost’ url displayed on your terminal in your browser.
+— Type the ‘localhost’ url displayed on your terminal in your browser.
 
--For MacOS/ Linux:
-—Type the following in Terminal”
+- For MacOS/ Linux:
+— - Type the following in Terminal”
 
 ```sh
  python -3 ./app.py
@@ -72,7 +78,7 @@ Developed By :-
 [Ayaan Khan]
 
 
-[//]: # []
+[//]: #
 	[numPy]: <https://numpy.org>
 	[pandas]: <https://pandas.pydata.org>
 	[sklearn]: <https://scikit-learn.org/stable/>
