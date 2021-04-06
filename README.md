@@ -65,7 +65,7 @@ flask run
 ```
 — -- 
 
-— Type the ‘localhost’ url displayed on your terminal in your browser.
+— Type the ‘localhost’ url displayed on your command line prompt in your browser.
 
 - For MacOS/ Linux:
 — - Type the following in Terminal”
@@ -74,6 +74,8 @@ flask run
  python -3 ./app.py
  ```
 —Type the ‘localhost’ url displayed on your terminal in your browser.
+
+### Working Demo
 
 ### Development
 
