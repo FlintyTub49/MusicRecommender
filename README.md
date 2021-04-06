@@ -34,6 +34,9 @@ We use the following python libraries:
 * [keras]
 * [flask]
 
+- Install The Dependencies By Running
+```!pip install -r requirements.txt```
+
 ### Run the application:
 
 - Download the application files from this repo as a zip file
