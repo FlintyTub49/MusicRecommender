@@ -1,6 +1,9 @@
 Title: Music Genre Detection and Recommendation.
+
 Authors: Mithesh R, Arth A, Heetansh J, Ayaan K.
+
 Under the guidance of: Pranav N.
+
 Date: 5-April-2021
 
 # Music Genre Detection and Recommendation.
