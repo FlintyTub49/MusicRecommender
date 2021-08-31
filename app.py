@@ -84,33 +84,25 @@ def getUserInput(path, genre):
 @app.route('/', methods = ['POST'])
 def upload_files():
 
-    # --------------------------------------
-    # Get File From User
-    # --------------------------------------
+    # ---------------------------- Get File From User ---------------------------- #
     file = request.files['audiofile']
     filepath = os.path.join(app.config['UPLOADS'], file.filename)
     file.save(filepath)
 
 
-    # --------------------------------------
-    # Preprocess User Input To Put in Model 
-    # --------------------------------------
+    # ------------------- Preprocess User Input To Put in Model ------------------ #
     x_user, y_user = getUserInput(filepath, 'rock')
     x_user = x_user[..., np.newaxis]
     
     
-    # ----------------------------
-    # Running The Model
-    # ----------------------------
+    # ----------------------------- Running The Model ---------------------------- #
     pred = np.argmax(model.predict(x_user), axis = -1)
     genre = le.inverse_transform([mode(pred)])[0]
     
     os.unlink(filepath)
 
 
-    # ----------------------------
-    # Getting The Recommendation
-    # ----------------------------
+    # ------------------------ Getting The Recommendation ------------------------ #
     recommend = recs[recs['Genre'] == genre]
 
     if recommend.shape[0] >= 3: sample = 3
@@ -119,9 +111,7 @@ def upload_files():
     df = recommend.sample(sample)
 
 
-    # ----------------------------
-    # Printing The Genre With Recommendations
-    # ----------------------------
+    # ------------------ Printing The Genre With Recommendations ----------------- #
     genre = 'Your Predicted Genre is {}'.format(genre)
     dummy = df.to_html(classes = 'table-data')
     return render_template('index.html', label = genre, 
